@@ -23,13 +23,19 @@ export default class Fruit extends React.Component {
         })
     }
 
+    selectFruit = (e) => {
+        this.setState({
+            nameOfFruit:e.target.innerHTML
+        })
+    }
+
     render() {
         return (
             <React.Fragment>
                 <p>The current fruit is {this.state.nameOfFruit}</p>
                 <div style={this.style}>{this.state.nameOfFruit}</div>
                 <button onClick={this.selectApple}>Apple</button>
-                <button onClick={this.selectBanana}>Banana</button>
+                <button onClick={this.selectFruit}>Banana</button>
                 <button onClick={()=>{
                     this.setState({
                         nameOfFruit:"Cherries"
