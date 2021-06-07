@@ -22,6 +22,7 @@ export default class Form extends React.Component {
     render() {
         return (
             <React.Fragment>
+               
                 <div>
                     <label className="form-label">First Name:</label>
                     <input onChange={this.updateFirstName} type="text" value={this.state.firstName} name="firstName" className="form-control" />
@@ -30,7 +31,8 @@ export default class Form extends React.Component {
                     <label className="form-label">Last Name</label>
                     <input onChange={this.updateLastName} className="form-control" type="text" value={this.state.lastName} name="lastName" />
                 </div>
-
+                <button>Check for Errors</button>
+  
             </React.Fragment>
 
         )
