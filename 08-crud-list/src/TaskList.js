@@ -36,11 +36,36 @@ export default class TaskList extends React.Component {
                         }}
                     />
                         {task.description}
+                        <button onClick={()=>{
+                            this.editTask(task.id)
+                        }}>Edit</button>
                     </div>
                 </div>
             )
         }
         return taskJSX;
+    }
+
+    editTask = (taskId)=>{
+        let modifiedIndex = this.state.tasks.findIndex(t => t.id === taskId);
+        let originalTask = this.state.tasks[modifiedIndex];
+
+        // ask the user for the new task name
+        let newTaskName = prompt("Enter the new name for the task");
+
+        let modifiedTask = {...originalTask, description:newTaskName }
+
+        // clone the original task and modify it
+        let clonedArray = [
+                           ...this.state.tasks.slice(0, modifiedIndex),
+                           modifiedTask,
+                           ...this.state.tasks.slice(modifiedIndex+1)
+                          ]
+
+        this.setState({
+            tasks: clonedArray
+        })
+
     }
 
     updateDoneStraightfoward = (taskId) => {
@@ -84,6 +109,9 @@ export default class TaskList extends React.Component {
         let indexToChange = this.state.tasks.findIndex(function(task){
             return task.id == clonedTask.id;
         })
+        // line 88 has side effects and is not recommended because
+        // it mutates the cloned array directly
+        // it's still OK because the cloned array is local to this function
         cloned[indexToChange] = clonedTask;
 
         // set cloned back into the state
