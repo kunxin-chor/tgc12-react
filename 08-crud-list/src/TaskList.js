@@ -28,17 +28,21 @@ export default class TaskList extends React.Component {
             taskJSX.push(
                 <div className="card">
                     <div className="card-body">
-                        <input type="checkbox" 
-                        checked={task.done}
-                        className="me-3"
-                        onChange={()=>{
-                            this.updateDoneElegant(task.id);
-                        }}
-                    />
+                        <input type="checkbox"
+                            checked={task.done}
+                            className="me-3"
+                            onChange={() => {
+                                this.updateDoneElegant(task.id);
+                            }}
+                        />
                         {task.description}
-                        <button onClick={()=>{
+                        <button onClick={() => {
                             this.editTask(task.id)
                         }}>Edit</button>
+
+                        <button onClick={() => {
+                            this.deleteTask(task.id)
+                        }}>Delete</button>
                     </div>
                 </div>
             )
@@ -46,26 +50,37 @@ export default class TaskList extends React.Component {
         return taskJSX;
     }
 
-    editTask = (taskId)=>{
+    editTask = (taskId) => {
         let modifiedIndex = this.state.tasks.findIndex(t => t.id === taskId);
         let originalTask = this.state.tasks[modifiedIndex];
 
         // ask the user for the new task name
         let newTaskName = prompt("Enter the new name for the task");
 
-        let modifiedTask = {...originalTask, description:newTaskName }
+        let modifiedTask = { ...originalTask, description: newTaskName }
 
         // clone the original task and modify it
         let clonedArray = [
-                           ...this.state.tasks.slice(0, modifiedIndex),
-                           modifiedTask,
-                           ...this.state.tasks.slice(modifiedIndex+1)
-                          ]
+            ...this.state.tasks.slice(0, modifiedIndex),
+            modifiedTask,
+            ...this.state.tasks.slice(modifiedIndex + 1)
+        ]
 
         this.setState({
             tasks: clonedArray
         })
 
+    }
+
+    deleteTask = (taskId) => {
+        let indexToDelete = this.state.tasks.findIndex(t => t.id === taskId);
+        let clonedArray = [
+            ...this.state.tasks.slice(0, indexToDelete),
+            ...this.state.tasks.slice(indexToDelete+1)
+        ]
+        this.setState({
+            'tasks':clonedArray
+        })
     }
 
     updateDoneStraightfoward = (taskId) => {
@@ -79,19 +94,19 @@ export default class TaskList extends React.Component {
             }
         }
 
-        
+
         // MODIFY AN OBJECT 
         // clone the original object
-        let clonedTask = {...wantedTask};
+        let clonedTask = { ...wantedTask };
 
         // invert the done property of the clonedTask object
         // if done was true, it will become false
         // if done was false, it will become true
 
-        
+
         // make the change to the object
         clonedTask.done = !clonedTask.done;
-        
+
         // same as:
         // if (clonedTask.done) {
         //
@@ -106,7 +121,7 @@ export default class TaskList extends React.Component {
         let cloned = this.state.tasks.slice();
 
         // change the array
-        let indexToChange = this.state.tasks.findIndex(function(task){
+        let indexToChange = this.state.tasks.findIndex(function (task) {
             return task.id == clonedTask.id;
         })
         // line 88 has side effects and is not recommended because
@@ -121,26 +136,26 @@ export default class TaskList extends React.Component {
     }
 
     updateDoneElegant = (taskId) => {
-        let wantedTask = this.state.tasks.filter(function(task){
+        let wantedTask = this.state.tasks.filter(function (task) {
             if (task.id == taskId) {
                 return task;
             }
         })[0];
 
-        let clonedTask = {...wantedTask};
+        let clonedTask = { ...wantedTask };
         clonedTask.done = !clonedTask.done;
 
         // clone the original tasks array, and put the clonedTask into
         // the position (i.e index) of the original task
 
-        let wantedIndex = this.state.tasks.findIndex(function(task){
+        let wantedIndex = this.state.tasks.findIndex(function (task) {
             return task.id == taskId
         })
 
         let clonedArray = [
             ...this.state.tasks.slice(0, wantedIndex),
             clonedTask,
-            ...this.state.tasks.slice(wantedIndex+1)
+            ...this.state.tasks.slice(wantedIndex + 1)
         ]
 
         this.setState({
@@ -149,12 +164,12 @@ export default class TaskList extends React.Component {
     }
 
     updateDoneIntermediate = (taskId) => {
-        let wantedTask = this.state.tasks.filter(task =>task.id == taskId);
+        let wantedTask = this.state.tasks.filter(task => task.id == taskId);
 
-        let clonedTask = {...wantedTask};
+        let clonedTask = { ...wantedTask };
         clonedTask.done = !clonedTask.done;
 
-        let clonedArray = this.state.tasks.map(function(eachTask){
+        let clonedArray = this.state.tasks.map(function (eachTask) {
             if (eachTask.id != taskId) {
                 return eachTask;
             } else {
